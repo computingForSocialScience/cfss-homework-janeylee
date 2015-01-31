@@ -38,8 +38,10 @@ def zip_code_barchart(neighborhood):
 	'''Creates .jpg bar chart of contractor zip codes for permits in Hyde Park.'''
 	counts = {}
 	for permit in range(len(neighborhood)):
-		for number in range(21, 100, 7):
-			if re.match('\d{5}', neighborhood[permit][number]):
+		for number in range(28, 130, 7): 
+		#contractor zip codes start at column 29 (=index 28) and end at column 127 (=index 128). 
+		#zip codes occur every 7th index
+			if re.match('\d{5}', neighborhood[permit][number]): #make sure it's a valid zip code
 				if int(neighborhood[permit][number][0:5]) in counts:
 					counts[int(neighborhood[permit][number][0:5])] += 1
 				else:
