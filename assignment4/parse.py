@@ -2,6 +2,7 @@ from __future__ import division
 import matplotlib.pyplot as plt
 import csv
 import sys
+import re
 
 def readCSV(filename):
     '''Reads the CSV file `filename` and returns a list
@@ -23,8 +24,9 @@ def get_avg_latlng(neighborhood):
 	lat = 0
 	longi = 0
 	for permit in range(len(neighborhood)):
-		lat += float(neighborhood[permit][-2])
-		longi += float(neighborhood[permit][-3])
+		if neighborhood[permit][-2]: # one entry missing a lat and long
+			lat += float(neighborhood[permit][-2])
+			longi += float(neighborhood[permit][-3])
 	avglat = lat/len(neighborhood)
 	avglongi = longi/len(neighborhood)
 
@@ -37,15 +39,15 @@ def zip_code_barchart(neighborhood):
 	counts = {}
 	for permit in range(len(neighborhood)):
 		for number in range(21, 100, 7):
-			if neighborhood[permit][number]:
+			if re.match('\d{5}', neighborhood[permit][number]):
 				if int(neighborhood[permit][number][0:5]) in counts:
 					counts[int(neighborhood[permit][number][0:5])] += 1
 				else:
 					counts[int(neighborhood[permit][number][0:5])] = 1
 	zips = range(len(counts.keys()))
-	plt.figure(figsize=(15,8))
+	plt.figure(figsize=(20,8))
 	plt.bar(zips, counts.values(), align='center')
-	plt.xticks(zips, counts.keys())
+	plt.xticks(zips, counts.keys(), rotation=90)
 	plt.xlabel("Zip codes")
 	plt.ylabel("Frequency")
 	plt.title("Bar Chart of Contractor Zip Codes for Permits in Hyde Park")
