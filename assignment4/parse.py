@@ -18,6 +18,8 @@ def readCSV(filename):
 HPpermits = readCSV("permits_hydepark.csv")
 
 def get_avg_latlng(neighborhood):
+	'''Computes the average latitude and longitude of construction permits
+	 in Hyde Park and prints it to the console.'''
 	lat = 0
 	longi = 0
 	for permit in range(len(neighborhood)):
@@ -31,6 +33,7 @@ def get_avg_latlng(neighborhood):
 
 
 def zip_code_barchart(neighborhood):
+	'''Creates .jpg bar chart of contractor zip codes for permits in Hyde Park.'''
 	counts = {}
 	for permit in range(len(neighborhood)):
 		for number in range(21, 100, 7):
