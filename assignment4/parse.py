@@ -27,7 +27,8 @@ def get_avg_latlng(neighborhood):
 	avglongi = longi/len(neighborhood)
 
 	return "average latitude = " + str(avglat) + " average longitude = " + str(avglongi)
-print get_avg_latlng(HPpermits)
+
+
 
 def zip_code_barchart(neighborhood):
 	counts = {}
@@ -49,4 +50,7 @@ def zip_code_barchart(neighborhood):
 
 	plt.show()
 
-zip_code_barchart(HPpermits)
+if sys.argv[1] == 'latlong':
+	print get_avg_latlng(HPpermits)
+if sys.argv[1] == 'hist':
+	zip_code_barchart(HPpermits)
