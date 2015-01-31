@@ -1,3 +1,5 @@
+from __future__ import division
+
 import csv
 import sys
 
@@ -13,4 +15,17 @@ def readCSV(filename):
     return(lines)
 
 
-### enter your code below
+HPpermits = readCSV("permits_hydepark.csv")
+
+def get_avg_latlng(neighborhood):
+	lat = 0
+	longi = 0
+	for permit in range(len(neighborhood)):
+		lat += float(neighborhood[permit][-2])
+		longi += float(neighborhood[permit][-3])
+	avglat = lat/len(neighborhood)
+	avglongi = longi/len(neighborhood)
+
+	return "average latitude = " + str(avglat) + " average longitude = " + str(avglongi)
+print get_avg_latlng(HPpermits)
+
