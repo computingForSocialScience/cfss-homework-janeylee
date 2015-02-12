@@ -15,7 +15,7 @@ def testFetchArtistInfo():
     assert fetchArtistInfo('6UE7nl9mha6s8z0wFQFIZ2')['genres'] == [u'europop']
 
 def testFetchAlbums():
-    assert len(fetchAlbumIds('57anmI1X2hXWPrNagFdzZr')) == 10
+    assert len(fetchAlbumIds('57anmI1X2hXWPrNagFdzZr')) == 9
 
 def testFetchAlbumInfo():
     albumInfo = fetchAlbumInfo('24geHauG3JIbpyf9CRiuvf')
@@ -39,8 +39,8 @@ def testWriteArtistsInfo():
     print "albumIds2=",len(albumIds2)
     print "albumIds3=",len(albumIds3)
 
-    assert len(albumIds1) == 20
-    assert len(albumIds2) == 20
+    assert len(albumIds1) == 24
+    assert len(albumIds2) == 21
     assert len(albumIds3) == 17
 
     artistInfo1 = fetchArtistInfo(artistId1)
