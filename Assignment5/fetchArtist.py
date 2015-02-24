@@ -16,7 +16,7 @@ def fetchArtistId(name):
 
     return data['artists']['items'][0]['id']
 
-
+# print fetchArtistId("Primevil")
 # fetchArtistId("Chumbawamba")
 # fetchArtistId("Patti Smith")
 

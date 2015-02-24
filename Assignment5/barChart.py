@@ -30,7 +30,7 @@ def getBarChartData():
             continue # if there is no artist_row, finish the loop
         artist_id,name,followers, popularity = artist_row
         artist_names.append(name)
-        # for each artist, append his/her name to artist_name
+        # for each artist, append his/her name to artist_names
 
     for album_row  in albums_rows:
         if not album_row:
