@@ -13,7 +13,7 @@ def getRelatedArtists(artistID):
 		list_of_artists.append(artist_id)
 	return list_of_artists
 
-# print getRelatedArtists("2mAFHYBasVVtMekMUkRO9g")
+# print getRelatedArtists('2mAFHYBasVVtMekMUkRO9g')
 
 def getDepthEdges(artistID, depth):
 	related_artists = getRelatedArtists(artistID) #gives a list of artists
@@ -24,7 +24,7 @@ def getDepthEdges(artistID, depth):
 		tuples.append(dyad)
 
 	if depth == 1:
-		return tuples
+		return tuples 
 	
 	new = []
 	if depth > 1:
@@ -32,14 +32,9 @@ def getDepthEdges(artistID, depth):
 			for each in tuples: # [('A','B'), ('A','C')]
 				more_artists = getRelatedArtists(each[1]) #[D, E]
 				new += [(each[1],x) for x in more_artists if (each[1],x) not in new]
-				# i don't think there would be duplicates
-				# in tuples it will be a,b and in new it will be b,a
-				# becuase i take the 2nd letter as the first in new
 			depth = depth - 1
 		tuples += new
 		return tuples
-
-
 
 
 def getEdgeList(artistID, depth):
@@ -53,6 +48,7 @@ def getEdgeList(artistID, depth):
 def writeEdgeList(artistID,depth,filename):
 	doc = getEdgeList(artistID, depth)
 	doc.to_csv(filename, index=False)
+	return filename
 
 writeEdgeList('2mAFHYBasVVtMekMUkRO9g',2,'Edges.csv')
 
