@@ -11,11 +11,10 @@ def readEdgeList(filename):
 
 def degree(edgeList, in_or_out):
 	if in_or_out == "out":
-		df = pd.DataFrame(edgeList['artist1'].value_counts())
-		return df
+		return edgeList['artist1'].value_counts()
 	if in_or_out == "in":	
 		df = pd.DataFrame(edgeList['artist2'].value_counts())
-		return df
+		return edgeList['artist2'].value_counts()
 
 # print degree(readEdgeList("testEdgeList.csv"),'out')[0]
 
@@ -37,8 +36,16 @@ def randomCentralNode(inputDiGraph):
 	# of the network with the greatest connectivity 
 	# returns a dictionary
 	total = sum(eigen.values())
-	factor = 1/total
 	nc_dict = eigen
+	factor = None
+	try:
+		factor = 1/total #try this. if zerodivision error, do the following. if not, go to finally 
+	except ZeroDivisionError: #if a zerodiv error happens, execute code below
+		center = numpy.random.choice(nc_dict.keys())
+		return center
+
+	
+	# print eigen
 	nc_dict = {key:value*factor for key,value in nc_dict.iteritems()}
 	random = numpy.random.choice(nc_dict.keys(), p=nc_dict.values())
 	return random
