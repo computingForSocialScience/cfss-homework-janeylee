@@ -16,9 +16,22 @@ user="root"
 passwd=""
 db=pymysql.connect(db=dbname, host=host, user=user,passwd=passwd, charset='utf8')
 c = db.cursor()
-# app = Flask(__name__)
 
 def createNewPlaylist(artist):
+    create_playlist = """CREATE TABLE IF NOT EXISTS playlists ( 
+             id INTEGER PRIMARY KEY AUTO_INCREMENT, 
+            rootArtist VARCHAR(255)) 
+           ENGINE=MyISAM DEFAULT CHARSET=utf8"""
+
+    create_songs = """CREATE TABLE IF NOT EXISTS songs (
+            playlistId VARCHAR (3),
+            songOrder VARCHAR (3), 
+          artistName VARCHAR (128),
+             albumName VARCHAR (128), 
+             trackName VARCHAR (128)
+             ) ENGINE = MyISAM DEFAULT CHARSET=utf8"""
+    c.execute(create_playlist)
+    c.execute(create_songs)
     artist_id = fetchArtistId(artist)
     m = writeEdgeList(artist_id, 2, "%s.csv" % (artist_id))
     combined = readEdgeList(m)
@@ -47,61 +60,34 @@ def createNewPlaylist(artist):
 
         random_albums.append(random_album)
             
-    playlist = open("playlist.csv", "w", encoding='utf-8') # , encoding='utf-8' ??
-    playlist.write(u'artist_name, album_name, track_name\n')
 
-
+    sql_playlist = """INSERT INTO playlists (rootArtist) VALUES ("%s")""" % (artist)
+    c.execute(sql_playlist)
+    tracklist = []
+    order = 1
+    number = c.lastrowid
     for album in random_albums:
         url2 = "https://api.spotify.com/v1/albums/%s/tracks" % (album)
         req2 = requests.get(url2)
         if not req2.ok:
             print "error in request"
         data2 = req2.json()
-
+        playlistId = number
+        songOrder = order
         random_track = random.choice(data2['items'])
         name_artist = fetchArtistInfo(fetchAlbumInfo(album)['artist_id'])['name']
         name_album = fetchAlbumInfo(album)['name']
-        playlist.write(u'"%s","%s","%s"\n' % (name_artist, name_album, random_track['name']))
-    playlist.close()
-
-
-    sql_playlist = """INSERT INTO playlists (rootArtist) VALUES ('%s')""" % (artist)
-    print sql_playlist
-
-    # iden = """SELECT id FROM playlists WHERE rootArtist = '%s'""" % (artist)
-    # print iden
-    c.execute(sql_playlist)
-    # print c.execute(iden)
-    print c.lastrowid
-
-    f = open("playlist.csv", encoding='utf_8')
-    csv_file = unicodecsv.reader(f, encoding='utf-8')
-
-    header = True
-    order = 1
-    number = c.lastrowid
-    for l in csv_file:
+        tracklist.append((playlistId, songOrder, name_artist, name_album, random_track['name']))
+        order +=1
     
-        if header:
-            header = False
-            continue
-        playlistId = number
-        songOrder = order
-        artistName = l[0]
-        albumName = l[1]
-        trackName = l[2]
-        order += 1
-
-        sql_songs = """INSERT INTO songs (playlistId, songOrder, artistName, albumName, trackName) 
-        VALUES ('%s', '%s', "%s", "%s", "%s")""" % (playlistId, songOrder, artistName, albumName, trackName)
-
-        # print sql_songs
-        c.execute(sql_songs)
-
+    insertQuery = '''INSERT INTO songs (playlistId, songOrder, artistName, albumName, trackName) VALUES (%s, %s, %s, %s, %s)'''
+    c.executemany(insertQuery, tracklist)
 
 
     db.commit()
     c.close()
     db.close()
 
-createNewPlaylist("Vanessa Carlton")
+createNewPlaylist("Norah Jones")
+
+
