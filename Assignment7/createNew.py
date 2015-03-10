@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+# from flask import Flask, render_template, request, redirect, url_for
 import pymysql
 import sys
 from artistNetworks import *
@@ -16,20 +16,7 @@ user="root"
 passwd=""
 db=pymysql.connect(db=dbname, host=host, user=user,passwd=passwd, charset='utf8')
 c = db.cursor()
-app = Flask(__name__)
-
-# CREATE TABLE playlists ( 
-#              id INTEGER PRIMARY KEY AUTO_INCREMENT, 
-#             rootArtist VARCHAR(255)) 
-#            ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-#            CREATE TABLE songs (
-#             playlistId VARCHAR (3),
-#             songOrder VARCHAR (3), 
-#           artistName VARCHAR (128),
-#              albumName VARCHAR (128), 
-#              trackName VARCHAR (128)
-#              ) ENGINE = MyISAM DEFAULT CHARSET=utf8;
+# app = Flask(__name__)
 
 def createNewPlaylist(artist):
     artist_id = fetchArtistId(artist)
@@ -43,7 +30,6 @@ def createNewPlaylist(artist):
         list_of_artists.append(rand)
         x -= 1
     random_albums = [] #1 random album per artist
-    print list_of_artists
 
     for art in list_of_artists: # 30 artists
 
@@ -107,7 +93,7 @@ def createNewPlaylist(artist):
         sql_songs = """INSERT INTO songs (playlistId, songOrder, artistName, albumName, trackName) 
         VALUES ('%s', '%s', "%s", "%s", "%s")""" % (playlistId, songOrder, artistName, albumName, trackName)
 
-        print sql_songs
+        # print sql_songs
         c.execute(sql_songs)
 
 
@@ -116,53 +102,4 @@ def createNewPlaylist(artist):
     c.close()
     db.close()
 
-# createNewPlaylist("Patti Smith")
-
-
-# @app.route('/')
-# def make_index_resp():
-#     # this function just renders templates/index.html when
-#     # someone goes to http://127.0.0.1:5000/
-#     return render_template('index.html')
-
-
-@app.route('/playlists/')
-def make_playlists_resp():
-    sql = """SELECT * from playlists"""
-    c.execute(sql)
-    playlists={}
-    for tup in c.fetchall():
-        (iden, play) = tup
-        playlists[iden] = play
-    return render_template('playlists.html',playlists=playlists)
-
-
-@app.route('/playlist/<playlistId>')
-def make_playlist_resp(playlistId):
-    sql2 = """SELECT songOrder, artistName, albumName, trackName from songs where playlistId = '%s'""" % (playlistId)
-    c.execute(sql2)
-    songs=[]
-    for n in c.fetchall():
-        print n
-        songs.append(n)
-    return render_template('playlist.html',songs=songs)
-
-
-@app.route('/addPlaylist/',methods=['GET','POST'])
-def add_playlist():
-    if request.method == 'GET':
-        # This code executes when someone visits the page.
-        return(render_template('addPlaylist.html'))
-    elif request.method == 'POST':
-        # this code executes when someone fills out the form
-        artistName = request.form.get('artistName')
-        createNewPlaylist('%s') % (artistName)
-        return(redirect("/playlists/"))
-
-
-
-# problems: encoding, json error, c.execute(iden) doesn't 
-# get the right playlist id so it adds to already existing playlist 
-if __name__ == '__main__':
-    app.debug=True
-    app.run()
+createNewPlaylist("Mika")

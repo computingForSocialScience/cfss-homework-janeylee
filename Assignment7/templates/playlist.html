@@ -1,0 +1,30 @@
+<html>
+<head><title>Playlist</title></head>
+<body>
+	<table>
+
+<tr>
+ <th>Song Number</th>
+ <th>Artist</th>
+  <th>Album</th>
+ <th>Track</th>
+
+ </tr>
+ {% for n in songs %}
+
+<tr>
+	<td> {{n[0]}} </td>
+	<td> {{n[1]}} </td>
+	<td> {{n[2]}} </td>
+	<td> {{n[3]}} </td>
+
+</tr>
+ {% endfor %}
+ </ul>
+
+	</table>
+
+	<a href="/playlists">Back to playlists</a>
+
+</body>
+</html>

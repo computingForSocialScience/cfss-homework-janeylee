@@ -1,0 +1,16 @@
+<html>
+<head><title>Playlist app</title></head>
+<body>
+
+<ul>
+ {% for key,value in
+playlists.items() %}
+ <li><a href="/playlist/{{key}}">{{key}}{{ value}}</a>
+ {% endfor %}
+ </ul>
+
+<a href="/addPlaylist">Add a playlist!</a>
+
+</body>
+</html>
+
