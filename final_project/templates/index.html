@@ -1,0 +1,33 @@
+
+<html>
+<head><title>ACS Community Survey explorer</title></head>
+<body>
+<h1>ACS Community Survey Explorer</h1>
+<select name="Select state">
+{% for state in states %}
+
+<option value="{{state}}"> {{state}}</option>
+<!-- how to make variable that i'll access in my route? -->
+{% endfor %}
+
+</select>
+
+<select name="Select Column 1">
+<!-- {% for  %} -->
+
+<!-- <option value="{{X}}"> {{X}}</option> -->
+<!-- {% endfor %} -->
+
+</select>
+
+<select name="Select Column 2">
+<!-- {% for  %} -->
+
+<!-- <option value="{{X}}"> {{X}}</option> -->
+<!-- {% endfor %} -->
+
+</select>
+
+
+</body>
+</html>
