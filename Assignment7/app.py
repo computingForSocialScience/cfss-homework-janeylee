@@ -16,14 +16,14 @@ host="localhost"
 user="root"
 passwd=""
 db=pymysql.connect(db=dbname, host=host, user=user,passwd=passwd, charset='utf8')
-c = db.cursor()
 app = Flask(__name__)
 
 
 
 
 def createNewPlaylist(artist):
-    
+    c = db.cursor()
+
     create_playlist = """CREATE TABLE IF NOT EXISTS playlists ( 
              id INTEGER PRIMARY KEY AUTO_INCREMENT, 
             rootArtist VARCHAR(255)) 
@@ -93,7 +93,7 @@ def createNewPlaylist(artist):
 
     db.commit()
     c.close()
-    db.close()
+    #db.close()
 
 @app.route('/')
 def make_index_resp():
@@ -104,24 +104,31 @@ def make_index_resp():
 
 @app.route('/playlists/')
 def make_playlists_resp():
+    c = db.cursor()
     sql = """SELECT * from playlists"""
     c.execute(sql)
+    
     playlists={}
     for tup in c.fetchall():
         (iden, play) = tup
         playlists[iden] = play
+    c.close()
     return render_template('playlists.html',playlists=playlists)
-
+    
 
 @app.route('/playlist/<playlistId>')
 def make_playlist_resp(playlistId):
+    c = db.cursor()
+
     sql2 = """SELECT songOrder, artistName, albumName, trackName from songs where playlistId = '%s'""" % (playlistId)
     c.execute(sql2)
+    
     songs=[]
     for n in c.fetchall():
-        print n
         songs.append(n)
+    c.close()
     return render_template('playlist.html',songs=songs)
+
 
 
 @app.route('/addPlaylist/',methods=['GET','POST'])
@@ -132,12 +139,10 @@ def add_playlist():
     elif request.method == 'POST':
         # this code executes when someone fills out the form
         artistName = request.form['artistName']
-        createNewPlaylist("%s") % (artistName)
+        createNewPlaylist(artistName)
+
         return redirect("/playlists/")
 
-
-
-# problems:  json error, should tables really be recreated each time 
 if __name__ == '__main__':
     app.debug=True
     app.run()
