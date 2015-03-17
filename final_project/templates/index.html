@@ -3,31 +3,37 @@
 <head><title>ACS Community Survey explorer</title></head>
 <body>
 <h1>ACS Community Survey Explorer</h1>
-<select name="Select state">
-{% for state in states %}
 
-<option value="{{state}}"> {{state}}</option>
-<!-- how to make variable that i'll access in my route? -->
-{% endfor %}
+<form action ="/compare" method ="get">
+<p>State</p>
 
-</select>
-
-<select name="Select Column 1">
-<!-- {% for  %} -->
-
-<!-- <option value="{{X}}"> {{X}}</option> -->
-<!-- {% endfor %} -->
-
-</select>
-
-<select name="Select Column 2">
-<!-- {% for  %} -->
-
-<!-- <option value="{{X}}"> {{X}}</option> -->
-<!-- {% endfor %} -->
-
-</select>
+	<select name = "state">
+	{% for key,value in fips_dict.iteritems() %}
+	<option value="{{value}}" name = State> {{key}}</option>
+	{% endfor %}
+	</select>
 
 
+<p>Column 1</p>
+
+	<select name ="column1">
+	{% for x in column_titles %}
+	<option value="{{x[0]}}"> {{x[1]}}</option>
+	{% endfor %}
+	</select>
+
+<p>Column 2</p>
+
+	<select name ="column2">
+	{% for x in column_titles %}
+	<option value="{{x[0]}}"> {{x[1]}}</option>
+	{% endfor %}
+	</select>
+
+	<br></br>
+
+	<input type = "submit">
+
+</form>
 </body>
 </html>

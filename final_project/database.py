@@ -1,11 +1,8 @@
 from collectData import *
 import pymysql
-from flask import Flask, render_template, request, redirect, url_for
-app = Flask(__name__)
 
 
-
-list_of_tables = ['B19001', 'B27001', 'B27010', 'B21004', 'B21001']
+list_of_tables = ['B19001', 'B27001']
 
 dbname="acs_survey"
 host="localhost"
@@ -29,7 +26,6 @@ c.execute(create_columninfo)
 	# index INTEGER PRIMARY KEY AUTO_INCREMENT, 
 	# geoID VARCHAR (128), 
 	# FIPS VARCHAR (3),
-# # ?????????????????????????
 #          ) ENGINE = MyISAM DEFAULT CHARSET=utf8"""
 #  It will have as many columns as the corresponding ACS table has
 # HOW DO I KNOW HOW TO MAKE THE TABLE THEN???
@@ -41,25 +37,3 @@ insertQuery = '''INSERT INTO column_info (ACScolumnId, columnName, ACStableId, t
 for table in list_of_tables:
 	c.executemany(insertQuery, fetchTableInfo(table))
 c.close()
-
-@app.route('/', methods=["GET", "POST"])
-def index():
-	fips_URL = "http://cfss.uchicago.edu/data/FIPS.json"
-	fips_req = requests.get(fips_URL)
-	if not fips_req.ok:
-		print "error in request"
-	fips_dict = fips_req.json()
-	states = fips_dict.keys()
-
-	if request.method == 'GET':
-		return render_template('index.html', states = states)
-	if request.method == 'POST':
-  		pass
-  		
-@app.route('/compare?state=<FIPSCode>&col1=<columnId1>&col2=<columnId2>')
-def compare():
-	pass
-
-if __name__ == '__main__':
-    app.debug=True
-    app.run()

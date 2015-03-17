@@ -24,7 +24,7 @@ def fetchTableInfo(tableID):
     	title = data["table_title"]
     	denom = data["denominator_column_id"]
     	column_list.append((key, value["column_title"], title, tableID, denom))
-
+    
     return column_list
 
 # print fetchTableInfo("B19001")
@@ -47,7 +47,7 @@ def downloadTableData(tableID, state_name):
 
 	big = []
 	for geo in state_data['data']:
-		table_info = tuple(state_data['data'][geo]['B19001']['estimate'].values())
+		table_info = tuple(state_data['data'][geo][tableID]['estimate'].values())
 		info = (geo, stateid) + table_info
 		big.append(info)
 
