@@ -1,14 +1,6 @@
 import requests
 import csv
 
-'''
-B27001	Health Insurance Coverage Status by Sex by Age
-Table B19001: Household Income
-B27010	Types of Health Insurance Coverage by Age
-Table B21004: Median Income by Veteran Status by Sex for the Civilian Population 18 Years and Over With Income
-Table B21001: Sex by Age by Veteran Status for the Civilian Population 18 Years and Over
-
-'''
 
 
 def fetchTableInfo(tableID):
@@ -27,7 +19,7 @@ def fetchTableInfo(tableID):
 
     return column_list
 
-print fetchTableInfo("B19001")
+# print fetchTableInfo("B19001")
 
 def downloadTableData(tableID, state_name):
 	"""Downloads table data by state"""
