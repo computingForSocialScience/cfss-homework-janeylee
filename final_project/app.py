@@ -1,6 +1,10 @@
 from collectData import *
 import pymysql
 from flask import Flask, render_template, request, redirect, url_for
+
+from bokeh.plotting import figure
+from bokeh.resources import CDN
+from bokeh.embed import file_html, components
 app = Flask(__name__)
 
 
@@ -39,19 +43,21 @@ def compare():
 	column2 = request.args['column2']
 	state = request.args['state']
 	join = """SELECT commute.%s, income.%s FROM commute, income WHERE commute.geoID=income.geoID"""  % (column1, column2)
-	print join
 	c.execute(join)
-	print "executed join"
+	print "executed join" # it takes about 40 minutes for this to print after executing 'join'
+	# y = 
+	# x = 
+	# how do you access one column from join to assign it to x and y?
+
+	p = figure(title='Household Income versus Commute Time',plot_width=500,plot_height=400)
+	p.line(x,y)
+	p.xaxis.axis_label = "Household Income"
+	p.yaxis.axis_label = "Commute Time"
+	figJS,figDiv = components(p,CDN)
 
 
+	return render_template('chart.html',column1=column1,column2=column1, state = state, y=y, figJS=figJS,figDiv=figDiv)
 
-	return render_template('chart.html',column1=column1,column2=column1, state = state)
-
-	# ImmutableMultiDict([('state', u'Mississippi'), ('column1', u'B19001003'), ('column2', u'B27001007')])
-	# what table are those columns in
-	# contrusct query that draws data
-	# put bokeh/regression code goes here 
-	# send to template 
 	c.close()
 
 if __name__ == '__main__':
