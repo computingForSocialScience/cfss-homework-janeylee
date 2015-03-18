@@ -1,7 +1,6 @@
 from collectData import *
 import pymysql
 from flask import Flask, render_template, request, redirect, url_for
-
 from bokeh.plotting import figure
 from bokeh.resources import CDN
 from bokeh.embed import file_html, components
@@ -44,7 +43,7 @@ def compare():
 	state = request.args['state']
 	join = """SELECT commute.%s, income.%s FROM commute, income WHERE commute.geoID=income.geoID"""  % (column1, column2)
 	c.execute(join)
-	print "executed join" # it takes about 40 minutes for this to print after executing 'join'
+	print "executed join" 
 	# y = 
 	# x = 
 	# how do you access one column from join to assign it to x and y?

@@ -20,60 +20,60 @@ user="root"
 passwd=""
 db=pymysql.connect(db=dbname, host=host, user=user,passwd=passwd, charset='utf8')
 
-# c = db.cursor()
-# create_columninfo = """CREATE TABLE IF NOT EXISTS column_info ( 
-#          ACScolumnId VARCHAR (128),
-#          columnName VARCHAR (128),
-#          ACStableId VARCHAR (255),
-#          tableName VARCHAR (128),
-#          denom VARCHAR (128)
-#          )
-#        ENGINE=MyISAM DEFAULT CHARSET=utf8"""
-# c.execute(create_columninfo)
+c = db.cursor()
+create_columninfo = """CREATE TABLE IF NOT EXISTS column_info ( 
+         ACScolumnId VARCHAR (128),
+         columnName VARCHAR (128),
+         ACStableId VARCHAR (255),
+         tableName VARCHAR (128),
+         denom VARCHAR (128)
+         )
+       ENGINE=MyISAM DEFAULT CHARSET=utf8"""
+c.execute(create_columninfo)
 
-# insertCol = '''INSERT INTO column_info (ACScolumnId, columnName, ACStableId, tableName, denom) VALUES (%s, %s, %s, %s, %s)'''
+insertCol = '''INSERT INTO column_info (ACScolumnId, columnName, ACStableId, tableName, denom) VALUES (%s, %s, %s, %s, %s)'''
 
-# for table in list_of_tables:
-# 	c.executemany(insertCol, fetchTableInfo(table))
-# c.close()
+for table in list_of_tables:
+	c.executemany(insertCol, fetchTableInfo(table))
+c.close()
 
 c=db.cursor()
 
-# create_income = """CREATE TABLE IF NOT EXISTS income (
-# 	geoID VARCHAR (128),
-# 	Fips VARCHAR (128),
-# 	B19001001 VARCHAR(128),
-# 	B19001002 VARCHAR(128), 
-# 	B19001003 VARCHAR(128), 
-# 	B19001004 VARCHAR(128),
-# 	B19001005 VARCHAR(128),  
-# 	B19001006 VARCHAR(128),
-# 	B19001007 VARCHAR(128),  
-# 	B19001008 VARCHAR(128), 
-# 	B19001009 VARCHAR(128), 
-# 	B19001010 VARCHAR(128), 
-# 	B19001011 VARCHAR(128), 
-# 	B19001012 VARCHAR(128), 
-# 	B19001013 VARCHAR(128), 
-# 	B19001014 VARCHAR(128), 
-# 	B19001015 VARCHAR(128), 
-# 	B19001016 VARCHAR(128), 
-# 	B19001017 VARCHAR(128)
-#          ) ENGINE=MyISAM DEFAULT CHARSET=utf8"""
+create_income = """CREATE TABLE IF NOT EXISTS income (
+	geoID VARCHAR (128),
+	Fips VARCHAR (128),
+	B19001001 VARCHAR(128),
+	B19001002 VARCHAR(128), 
+	B19001003 VARCHAR(128), 
+	B19001004 VARCHAR(128),
+	B19001005 VARCHAR(128),  
+	B19001006 VARCHAR(128),
+	B19001007 VARCHAR(128),  
+	B19001008 VARCHAR(128), 
+	B19001009 VARCHAR(128), 
+	B19001010 VARCHAR(128), 
+	B19001011 VARCHAR(128), 
+	B19001012 VARCHAR(128), 
+	B19001013 VARCHAR(128), 
+	B19001014 VARCHAR(128), 
+	B19001015 VARCHAR(128), 
+	B19001016 VARCHAR(128), 
+	B19001017 VARCHAR(128)
+         ) ENGINE=MyISAM DEFAULT CHARSET=utf8"""
 
-# c.execute(create_income)
-# print "created income chart"
+c.execute(create_income)
+print "created income chart"
 
 
 
-# for state in states.keys():
-# 	print "starting state" + state
-# 	insertIncome = '''INSERT INTO income (geoID, Fips, B19001001, B19001002, B19001003, B19001004, B19001005, 
-# 		B19001006, B19001007, B19001008, B19001009, B19001010, B19001011, B19001012, B19001013, 
-# 		B19001014, B19001015, B19001016, B19001017) VALUES 
-# 		(%s, %s, %s, %s, %s, %s,  %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'''
-# 	c.executemany(insertIncome, downloadTableData("B19001", state))
-# 	print "finished state" + state
+for state in states.keys():
+	print "starting state" + state
+	insertIncome = '''INSERT INTO income (geoID, Fips, B19001001, B19001002, B19001003, B19001004, B19001005, 
+		B19001006, B19001007, B19001008, B19001009, B19001010, B19001011, B19001012, B19001013, 
+		B19001014, B19001015, B19001016, B19001017) VALUES 
+		(%s, %s, %s, %s, %s, %s,  %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'''
+	c.executemany(insertIncome, downloadTableData("B19001", state))
+	print "finished state" + state
 
 
 create_commute = """CREATE TABLE IF NOT EXISTS commute (
